@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de IMC</title>
+    <style>
+        body {
+            text-align: center;
+            color: white;
+            background-color: gray;
+        }
+
+        section {
+            background-color: rgb(181, 181, 181);
+            width: 400px;
+            height: auto;
+            border-radius: 10px;
+            margin: 0px auto;
+        }
+        
+        section > p {
+            margin: 0px;
+            padding-top: 10px;
+        }
+
+        p.errado {
+            color: rgb(234, 73, 73);
+            background-color: rgb(96, 0, 0);
+        }
+
+        p#certo{
+            color: green;
+            background-color: rgba(0, 255, 0, 0.603);
+        }
+
+        footer {
+            margin: 10px auto;
+            background-color: rgb(70, 70, 70);
+            width: 400px;
+        }
+
+        input#Again {
+            display: none;
+            text-align: center;
+        }
+
+        input#botao{
+            margin-top: 10px;
+        }
+
+        div#tentativas > p{
+            margin: 0px;
+            margin-top: 5px;
+
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Jogo da Adivinhação</h1>
+    </header>
+    <section>
+        <p>Geraremos um número aleatório de 1 até 100, <br> e você escreverá no espaço abaixo o seu chute, <br> você tem apenas 10 tentativas. <br> Boa Sorte &#x1F609</p>
+        <p>Digite um número: <input type="number" name="num" id="num" onkeydown="verificEnter(event)"></p>
+        <input type="button" value="Verificar" id="botao" onclick="verificar()">
+            
+        <div id="res">
+
+        </div>
+        <div id="tentativas">
+            <p>Tentativas:</p>
+        </div>
+        <input type="button" value="Tentar de Novo" id="Again" onclick="deNovo()">
+    </section>
+    <footer>
+        &copy;André
+    </footer>
+    <script>
+        var num = document.getElementById('num')
+        var res = document.getElementById('res')
+        var cont = 0
+        var numPensa = Math.round(Math.random() * 100 - 1)
+        var again = document.getElementById('Again')
+        var acerto = false
+        var tentativas = document.getElementById('tentativas')
+        var numerosTent = []
+
+        function verificEnter(event) {
+            if (event.key === 'Enter'){
+                verificar()
+            }
+        }
+        
+        function deNovo(){
+            cont = 0
+            again.style.display = 'none'
+            numPensa = Math.round(Math.random() * 100)
+            res.innerHTML = '<p>Pode digitar um número acima</p>'
+            acerto = false
+            numerosTent = []
+            tentativas.innerHTML = '<p>Tentativas: </p>'
+        }
+
+        function verificar(){
+            console.log(num.value, numPensa, cont, numerosTent)
+            if (acerto == false){ 
+                if (num.value === ''){
+                    res.innerHTML = '<p class="errado">[ERRO] Digite um número</p>'
+                } else if (num.value <= 0 || num.value >= 100) {
+                    res.innerHTML = '<p class="errado">[ERRO] Digite um número entre 1 até 100</p>'
+                } else if (numerosTent.indexOf(num.value) != -1){
+                    res.innerHTML = `<p class="errado">Você já tentou o número ${num.value}, tente colocar outro.`
+                } else if (cont >= 10){
+                    acerto = false
+                    res.innerHTML = `<p class="errado">Acabou as suas tentativas, a resposta certa é ${numPensa}</p>`
+                    again.style.display = 'inline'
+                    again.style.textAlign = 'center'
+                } else {
+                    if (num.value == numPensa){
+                        res.innerHTML = '<p id="certo">Parabém você acertou!</p>'
+                        again.style.display = 'inline'
+                        again.style.textAlign = 'center'
+                        acerto = true
+                        tentativas.innerHTML += `${num.value}.`
+                    } else if (num.value > numPensa){
+                        res.innerHTML = `<p class="errado">O número é MENOR que ${num.value}</p>` 
+                        tentativas.innerHTML += `${num.value}, `
+                        numerosTent.push(num.value)
+                    } else if (num.value < numPensa){
+                        res.innerHTML = `<p class="errado">O número é MAIOR que ${num.value}</p>`
+                        tentativas.innerHTML += `${num.value}, `
+                        numerosTent.push(num.value)
+                    }
+                    cont ++
+                    num.focus()
+                    num.value = ''
+                }
+            }
+        }
+    </script>
+</body>
+</html>

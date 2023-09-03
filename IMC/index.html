@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de IMC</title>
+    <style>
+        body {
+            text-align: center;
+            color: white;
+            background-color: gray;
+        }
+
+        section {
+            background-color: rgb(181, 181, 181);
+            width: 400px;
+            height: 300px;
+            border-radius: 10px;
+            margin: 0px auto;
+        }
+        
+        section > p {
+            margin: 0px;
+            padding-top: 10px;
+        }
+
+        footer {
+            margin: 10px auto;
+            background-color: rgb(70, 70, 70);
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Calculadora de IMC</h1>
+    </header>
+    <section>
+
+            <p>Digite a sua Altura em Metros: <input type="number" name="txtalt" id="txtalt"></p>
+            <p>Digite o seu Peso em Kilos: <input type="number" name="txtpeso" id="txtpeso"></p>
+            <input type="button" value="Verificar" onclick="verificar()">
+            
+        <div id="res">
+
+        </div>
+    </section>
+    <footer>
+        &copy;André
+    </footer>
+    <script>
+        var res = document.getElementById('res')
+        var txtpeso = document.getElementById('txtpeso')
+        var txtalt = document.getElementById('txtalt')
+
+        function verificar(){
+            var peso = Number(txtpeso.value)
+            var alt = Number(txtalt.value)
+            var imc = 0
+            res.innerHTML = ''
+            if (txtpeso.value === '' || txtalt.value === ''){
+                window.alert('[ERRO] Faltam dados!')
+            } else if (txtpeso.value <= 0 || txtalt.value <= 0) {
+                window.alert('[ERRO] Digite um valor acima de 0')
+            } else {
+                imc = peso / (alt * alt)
+                res.innerHTML += `<p>A sua altura é de ${alt} metros</p>`
+                res.innerHTML += `<p>O seu peso é de ${peso}Kg</p>`
+                res.innerHTML += `<p>Seu IMC (Índice de Massa Corporal) é de ${imc}</p>`
+                if (imc <= 16.9){
+                    res.innerHTML += `<p>Você está muito abaixo do peso</p>`
+                } else if (imc <= 17 && 18.4){
+                    res.innerHTML += `<p>Você está abaixo do peso</p>`
+                } else if (imc <= 18.5 && 24.9){
+                    res.innerHTML += `<p>Você está com o peso normal</p>`
+                } else if (imc <= 25 && 29.9){
+                    res.innerHTML += `<p>Você está acima do peso</p>`
+                } else if (imc <= 30 && 34.9){
+                    res.innerHTML += `<p>Você está com Obesidade grau 1</p>`
+                } else if (imc <= 35 && 40){
+                    res.innerHTML += `<p>Você está com Obesidade grau 2</p>`
+                } else if (imc <= 40){
+                    res.innerHTML += `<p>Você está com Obesidade grau 3</p>`
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>
